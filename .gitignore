@@ -1,0 +1,10 @@
+.vscode/
+out/
+.DS_Store
+*.o
+*.so
+*.a
+*.d
+*.exe
+*.log
+*.pid

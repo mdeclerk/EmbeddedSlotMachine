@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '.gif/**'
+      - 'EFI/**'
+      - '**/*.md'
+      - 'scripts/**'
+  pull_request:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build.yml

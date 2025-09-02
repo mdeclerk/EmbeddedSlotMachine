@@ -1,0 +1,68 @@
+name: _build (reusable)
+
+on:
+  workflow_call:
+    outputs:
+      iso_artifact_name:
+        description: "cdrom.iso"
+        value: cdrom.iso
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  uki-aarch64:
+    name: Build uki-aarch64
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t buildenv:aarch64 .
+      - run: |
+          docker run --rm -v "$PWD":/project -w /project buildenv:aarch64 make uki
+          test -f out/uki-aarch64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: uki-aarch64
+          path: out/uki-aarch64
+          if-no-files-found: error
+
+  uki-x86_64:
+    name: Build uki-x86_64
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t buildenv:x86_64 .
+      - run: |
+          docker run --rm -v "$PWD":/project -w /project buildenv:x86_64 make uki
+          test -f out/uki-x86_64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: uki-x86_64
+          path: out/uki-x86_64
+          if-no-files-found: error
+
+  isoimage:
+    name: Build cdrom.iso
+    runs-on: ubuntu-24.04
+    needs: [uki-x86_64, uki-aarch64]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: uki-*
+          path: out
+          merge-multiple: true
+      - run: docker build -t buildenv:x86_64 .
+      - run: |
+          docker run --rm -v "$PWD":/project -w /project buildenv:x86_64 make isoimage
+          test -f out/cdrom.iso
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cdrom.iso
+          path: out/cdrom.iso
+          if-no-files-found: error

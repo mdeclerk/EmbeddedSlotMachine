@@ -2,10 +2,6 @@ name: _build (reusable)
 
 on:
   workflow_call:
-    outputs:
-      iso_artifact_name:
-        description: "cdrom.iso"
-        value: cdrom.iso
 
 permissions:
   contents: read

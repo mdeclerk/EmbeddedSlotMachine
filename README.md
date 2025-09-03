@@ -23,15 +23,15 @@ scripts/x86_64/qemu_boot_iso.sh     # 3b. Boot iso image with qemu x86_64
 
 ## Prerequisites
 
-- [Docker](https://www.docker.com): Build environment is based on docker services and docker platform emulation
+- [Docker](https://www.docker.com): Build environment is based on docker containers and docker's platform emulation capabilities.
 - [QEMU](https://www.qemu.org): Boot the iso within an emulated aarch64 or x86_64 machine
 
 ## How to build
 
 ### Automated build using GitHub Actions
 
-- After push to main branch a build of the isoimage is triggered by `.github/workflows/CI.yml`.
-- After pushing a version tag in the form of `v[0-9]+.[0-9]+` a release is triggerd by `.github/workflows/Release.yml`.
+- `.github/workflows/CI.yml`: Pushing on any branch triggers an automated build of the iso image.
+- `.github/workflows/Release.yml`: Pushing a version tag on mainline in the form of `v[0-9]+.[0-9]+` triggers an automated release.
 
 ### Manual build
 
@@ -47,7 +47,7 @@ Trigger a full build using docker via `scripts/build.sh`. This may take a while 
 scripts/build.sh
 ```
 
-Or bash into a specific build environment and `make` manually. This example randomly uses the aarch64 build environment.
+Or bash into a specific build environment and `make` manually. The following example randomly chooses the aarch64 build environment for the build.
 
 ```sh
 scripts/aarch64/buildenv_bash.sh    # bash into aarch64 build environment
@@ -85,14 +85,14 @@ Put iso image on a USB stick or other bootable medium. Hardware must have UEFI (
 
 ```
 EmbeddedSlotMachine/
-├── EFI/                    # EFI firmware to boot iso with qemu
-├── out/                    # Build artifacts: cdrom.iso, uki-aarch64, uki-x86_64
-├── rules/                  # Additional make scripts
-├── scripts/                # Convenience scripts to work with project
-├── SlotMachine/            # C++ games collection "Slot Machine" as only user space binaries
-├── Makefile                # Top-level make file (to be used within docker build environment)
-├── config.mk               # Global build configuration
-└── Dockerfile              # Dockerfile for aarch64/x86_64 build environemts
+├── EFI/          # EFI firmware to boot iso with qemu
+├── out/          # Build artifacts: cdrom.iso, uki-aarch64, uki-x86_64
+├── rules/        # Additional make scripts
+├── scripts/      # Convenience scripts to work with project
+├── SlotMachine/  # C++ games collection "Slot Machine" as only user space binaries
+├── Makefile      # Top-level make file (to be used within docker build environment)
+├── config.mk     # Global build configuration
+└── Dockerfile    # Dockerfile for aarch64/x86_64 build environemts
 ```
 
 ### Build artifacts
@@ -101,9 +101,9 @@ Main build artifact is the bootable multi-arch iso image `out/cdrom.iso`. Kernel
 
 ```
 EmbeddedSlotMachine/out/
-├── uki-aarch64             # Unified kernel image for aarch64
-├── uki-x86_64              # Unified kernel image for x86_64
-└── cdrom.iso               # Bootable (multi-arch) iso containing at least one kernel image
+├── uki-aarch64    # Unified kernel image for aarch64
+├── uki-x86_64     # Unified kernel image for x86_64
+└── cdrom.iso      # Bootable (multi-arch) iso containing at least one kernel image
 ```
 
 ### Scripts

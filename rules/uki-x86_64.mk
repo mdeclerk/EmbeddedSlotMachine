@@ -1,5 +1,6 @@
 /build/kernel/.config:
-	env -i PATH=$(PATH) MAKEFLAGS= MAKEOVERRIDES= sh -lc '\
+	@echo "[BUILD] $@"
+	@env -i PATH=$(PATH) MAKEFLAGS= MAKEOVERRIDES= sh -lc '\
 		cd $(dir $@) && \
 		make tinyconfig && \
 		scripts/config \
@@ -14,12 +15,13 @@
 		make olddefconfig'
 
 /build/kernel/arch/x86/boot/bzImage: /build/kernel/.config /build/initrd.cpio
-	env -i PATH=$(PATH) MAKEFLAGS= MAKEOVERRIDES= \
-		make -C /build/kernel -j $(shell nproc) bzImage
+	@echo "[BUILD] $@"
+	@env -i PATH=$(PATH) MAKEFLAGS= MAKEOVERRIDES= \
+		make --no-print-directory -C /build/kernel -j $(shell nproc) bzImage
 
 $(UKI_X86_64):
-	$(MAKE) /build/kernel/arch/x86/boot/bzImage
-	install -D /build/kernel/arch/x86/boot/bzImage $@
+	@$(MAKE) /build/kernel/arch/x86/boot/bzImage
+	@install -D /build/kernel/arch/x86/boot/bzImage $@
 
 .PHONY: uki
 uki: $(UKI_X86_64)
@@ -27,5 +29,5 @@ uki: $(UKI_X86_64)
 # convenience multi-purpose target to work with kernel while being in /project
 .PHONY: uki-%
 uki-%:
-	env -i PATH=$(PATH) MAKEFLAGS= MAKEOVERRIDES=  \
+	@env -i PATH=$(PATH) MAKEFLAGS= MAKEOVERRIDES=  \
 		make -C /build/kernel -j $(shell nproc) $*

@@ -18,7 +18,8 @@ all: uki isoimage
 # clean build artifacts
 .PHONY: clean
 clean:
-	rm -f $(UKI_AARCH64) $(UKI_X86_64) $(ISO)
+	@echo "[RM]  $(UKI_AARCH64) $(UKI_X86_64) $(ISO)"
+	@rm -f $(UKI_AARCH64) $(UKI_X86_64) $(ISO)
 
 # restore fresh build environment
 .PHONY: mrproper

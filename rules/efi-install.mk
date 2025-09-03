@@ -15,6 +15,7 @@ $(AAVMF_VARS): /usr/share/AAVMF/AAVMF_VARS.fd
 efi-install: $(OVMF_CODE) $(OVMF_VARS) $(AAVMF_CODE) $(AAVMF_VARS)
 
 efi-clean:
-	rm -f $(OVMF_CODE) $(OVMF_VARS) $(AAVMF_CODE) $(AAVMF_VARS)	
+	@echo "[RM]  $(OVMF_CODE) $(OVMF_VARS) $(AAVMF_CODE) $(AAVMF_VARS)"
+	@rm -f $(OVMF_CODE) $(OVMF_VARS) $(AAVMF_CODE) $(AAVMF_VARS)	
 
 efi-reinstall: efi-clean efi-install

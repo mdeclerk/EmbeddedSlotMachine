@@ -19,12 +19,17 @@
 	@env -i PATH=$(PATH) MAKEFLAGS= MAKEOVERRIDES= \
 		make --no-print-directory -C /build/kernel -j $(shell nproc) Image
 
-$(UKI_AARCH64):
-	@$(MAKE) /build/kernel/arch/arm64/boot/Image
+$(UKI_AARCH64): /build/kernel/arch/arm64/boot/Image
+	@echo "[COPY] $@"
 	@install -D /build/kernel/arch/arm64/boot/Image $@
 
 .PHONY: uki
-uki: $(UKI_AARCH64)
+uki: 
+	@if [ ! -f "$(UKI_AARCH64)" ]; then \
+		$(MAKE) $(UKI_AARCH64); \
+	else \
+		echo "[INFO] $(UKI_AARCH64) already exists"; \
+	fi
 
 # convenience multi-purpose target to work with kernel while being in /project
 .PHONY: uki-%

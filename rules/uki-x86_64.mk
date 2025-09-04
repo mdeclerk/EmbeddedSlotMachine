@@ -19,12 +19,17 @@
 	@env -i PATH=$(PATH) MAKEFLAGS= MAKEOVERRIDES= \
 		make --no-print-directory -C /build/kernel -j $(shell nproc) bzImage
 
-$(UKI_X86_64):
-	@$(MAKE) /build/kernel/arch/x86/boot/bzImage
+$(UKI_X86_64): /build/kernel/arch/x86/boot/bzImage
+	@echo "[COPY] $@"
 	@install -D /build/kernel/arch/x86/boot/bzImage $@
 
 .PHONY: uki
-uki: $(UKI_X86_64)
+uki: 
+	@if [ ! -f "$(UKI_X86_64)" ]; then \
+		$(MAKE) $(UKI_X86_64); \
+	else \
+		echo "[INFO] $(UKI_X86_64) already exists"; \
+	fi
 
 # convenience multi-purpose target to work with kernel while being in /project
 .PHONY: uki-%

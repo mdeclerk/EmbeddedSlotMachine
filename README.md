@@ -54,8 +54,6 @@ scripts/aarch64/buildenv_bash.sh    # bash into aarch64 build environment
 
 make uki                            # build unified kernel image uki-aarch64
 make isoimage                       # build iso image cdrom.iso which includes uki-aarch64 (and uki-86_64 if present)
-
-make                                # OR: default target is shorthand for `make uki` and `make isoimage` 
 ```
 
 ## How to play

@@ -23,8 +23,7 @@
 	mmd -i $@ ::/EFI ::/EFI/BOOT && \
 	mcopy -i $@ -s $</* ::/
 
-$(ISO): 
-	@$(MAKE) /build/iso/esp.img
+$(ISO): /build/iso/esp.img
 	@echo "[BUILD] $@"
 	@xorriso -as mkisofs -r -V "SLOTMACHINE" -o $@ \
 		-eltorito-alt-boot -e EFI/esp.img -no-emul-boot -isohybrid-gpt-basdat \
@@ -32,7 +31,12 @@ $(ISO):
 		EFI/esp.img=/build/iso/esp.img
 
 .PHONY: isoimage
-isoimage: $(ISO)
+isoimage: 
+	@if [ ! -f "$(ISO)" ]; then \
+		$(MAKE) $(ISO); \
+	else \
+		echo "[INFO] $(ISO) already exists"; \
+	fi
 
 .PHONY: isoimage-mrproper
 isoimage-mrproper:

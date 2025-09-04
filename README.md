@@ -30,8 +30,8 @@ scripts/x86_64/qemu_boot_iso.sh     # 3b. Boot iso image with qemu x86_64
 
 ### Automated build using GitHub Actions
 
-- `.github/workflows/CI.yml`: Pushing on any branch triggers an automated build of the iso image.
-- `.github/workflows/Release.yml`: Pushing a version tag on mainline in the form of `v[0-9]+.[0-9]+` triggers an automated release.
+- `.github/workflows/CI.yml`: Pushing on main branch triggers an automated build of the iso image.
+- `.github/workflows/Release.yml`: Pushing a version tag triggers an automated release.
 
 ### Manual build
 
@@ -77,7 +77,7 @@ scripts/efi_reinstall.sh
 
 ### Real hardware
 
-Put iso image on a USB stick or other bootable medium. Hardware must have UEFI (no BIOS supported) as UEFI allows a framebuffer console using GOP/simpledrm w/o any specific graphics driver in the kernel.
+Put iso image on a USB stick or other bootable medium. Hardware must have UEFI (no BIOS supported) as it allows a framebuffer console using GOP/simpledrm w/o the need of a specific graphics driver in the kernel.
 
 ## Project overview
 
@@ -97,7 +97,7 @@ EmbeddedSlotMachine/
 
 ### Build artifacts
 
-Main build artifact is the bootable multi-arch iso image `out/cdrom.iso`. Kernel images are bundled with user space (=SlotMachine games collection) and command line arguments into one EFI executable file.
+Main build artifact is the bootable multi-arch iso image `out/cdrom.iso`. Kernel images are bundled with user space (=Slot Machine games collection) and command line arguments into one EFI executable file.
 
 ```
 EmbeddedSlotMachine/out/

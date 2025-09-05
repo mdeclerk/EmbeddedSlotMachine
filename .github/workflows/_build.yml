@@ -17,9 +17,9 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -t buildenv:aarch64 .
+      - run: docker build --platform=linux/aarch64 -t buildenv:aarch64 .
       - run: |
-          docker run --rm -v "$PWD":/project -w /project buildenv:aarch64 make uki
+          docker run --rm -v "$PWD":/project buildenv:aarch64 make uki
           test -f out/uki-aarch64
       - uses: actions/upload-artifact@v4
         with:
@@ -32,9 +32,9 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -t buildenv:x86_64 .
+      - run: docker build --platform=linux/x86_64 -t buildenv:x86_64 .
       - run: |
-          docker run --rm -v "$PWD":/project -w /project buildenv:x86_64 make uki
+          docker run --rm -v "$PWD":/project buildenv:x86_64 make uki
           test -f out/uki-x86_64
       - uses: actions/upload-artifact@v4
         with:
@@ -53,9 +53,9 @@ jobs:
           pattern: uki-*
           path: out
           merge-multiple: true
-      - run: docker build -t buildenv:x86_64 .
+      - run: docker build --platform=linux/x86_64 -t buildenv:x86_64 .
       - run: |
-          docker run --rm -v "$PWD":/project -w /project buildenv:x86_64 make isoimage
+          docker run --rm -v "$PWD":/project buildenv:x86_64 make isoimage
           test -f out/cdrom.iso
       - uses: actions/upload-artifact@v4
         with:

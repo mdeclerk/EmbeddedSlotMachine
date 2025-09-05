@@ -1,6 +1,6 @@
 FROM ubuntu:24.04
-ENV DEBIAN_FRONTEND=noninteractive
 
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         build-essential \
@@ -20,10 +20,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         dosfstools \
         qemu-efi-aarch64 \
         ovmf \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build/kernel
-RUN git clone --depth=1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git /build/kernel
+RUN git clone --depth=1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git .
 
 WORKDIR /project
 
